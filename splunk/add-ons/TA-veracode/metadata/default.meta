@@ -1,2 +1,7 @@
+[]
+access = read : [ * ], write : [ admin ]
+export = system
 
-default.meta
+[views]
+access = read : [ * ], write : [ admin ]
+export = none
