@@ -1,0 +1,56 @@
+###############################################
+# Ansible Automation Controller Inventory File 
+
+# Standalone automation controller with internal database
+###############################################
+
+########################################
+# Define the standalone automation controller #
+########################################
+
+# Specify the standalone automation controller with the hostname or IP address
+[automationcontroller]
+LAB-AAP-CONT-01 ansible_connection=local
+
+
+###################################
+# Define the database (PostgreSQL) #
+###################################
+
+# Define the variables applicable to all hosts
+[all:vars]
+# Admin password for Ansible Automation Platform GUI
+admin_password='your_admin_password'
+
+
+# PostgreSQL database configuration
+# Note: The following variables are specific to the PostgreSQL database used by Ansible Automation Platform.
+
+# Hostname or IP address of the PostgreSQL server. Leave empty for default.
+pg_host=''
+
+# Port number of the PostgreSQL server. Leave empty for default.
+pg_port=''
+
+# Name of the database used by Ansible Automation Platform
+pg_database='automationcontroller'
+
+# Username to authenticate with the PostgreSQL database
+pg_username='automationcontroller'
+
+# Password to authenticate with the PostgreSQL database
+pg_password='your_pg_password'
+
+
+###########################################
+# Red Hat Container Registry configuration #
+###########################################
+
+# URL of the Red Hat container registry
+registry_url='registry.redhat.io'
+
+# Username to authenticate with the Red Hat container registry
+registry_username='your_registry_username'
+
+# Password to authenticate with the Red Hat container registry
+registry_password='your_registry_password'
