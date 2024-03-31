@@ -1,0 +1,52 @@
+###############################################
+# Ansible Automation Hub Inventory File 
+
+# Standalone Automation Hub with internal database
+###############################################
+
+########################################
+# Define the standalone Automation controller #
+########################################
+
+[Automationcontroller]
+# Leave empty
+
+
+#################################
+# Define the Automation hub      #
+#################################
+
+[Automationhub]
+# Specify the Automation hub with the hostname or IP address
+LAB-AAP-HUB-01 ansible_connection=local
+
+
+###################################
+# Define the variables applicable to all hosts #
+###################################
+
+# Admin password for the Automation Hub GUI
+[all:vars]
+automationhub_admin_password='your_admin_password'
+
+
+# Automation Hub PostgreSQL database configuration
+# Note: The following variables are specific to the PostgreSQL database used by Automation Hub.
+
+# Hostname or IP address of the PostgreSQL server. Leave empty for default.
+automationhub_pg_host=''
+
+# Port number of the PostgreSQL server. Leave empty for default.
+automationhub_pg_port=''
+
+# Name of the database used by Automation Hub
+automationhub_pg_database='automationhub'
+
+# Username to authenticate with the PostgreSQL database
+automationhub_pg_username='automationhub'
+
+# Password to authenticate with the PostgreSQL database
+automationhub_pg_password='your_pg_password'
+
+# SSL mode for the PostgreSQL connection
+automationhub_pg_sslmode='prefer'
