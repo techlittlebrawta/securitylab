@@ -1,0 +1,52 @@
+===================================================================
+Instructions: Installing Ansible Automation Platform on RHEL 9
+===================================================================
+
+1. Download the setup bundle:
+   - Obtain the Ansible Automation Platform setup bundle file `ansible-automation-platform-setup-bundle-2.4-1-x86_64.tar.gz` from a trusted source or the official Red Hat website.
+   - Make sure you have the necessary permissions to access and install software on your RHEL 9 system.
+
+2. Open a terminal:
+   - Launch a terminal on your RHEL 9 system. You can usually find the terminal application in the Applications menu or by using the search functionality.
+
+3. Navigate to the directory where the setup bundle is located:
+   - Use the `cd` command to navigate to the directory where you downloaded the setup bundle. For example, if you downloaded it to your Downloads directory, you can use the following command:
+     cd ~/Downloads
+
+4. Extract the contents of the setup bundle:
+   - Use the `tar` command to extract the contents of the setup bundle. The command should be as follows:
+     tar -zxvf ansible-automation-platform-setup-bundle-2.4-1-x86_64.tar.gz
+
+5. Change into the extracted directory:
+   - Use the `cd` command to change into the directory that was created after extracting the bundle. The directory name may vary depending on the version of the setup bundle. For example:
+     cd ansible-automation-platform-setup-bundle-2.4-1-x86_64
+
+6. Configure the inventory file:
+   - Inside the extracted directory, you should find a file named `inventory`. This file is used to define the hosts and connection details for the Ansible Automation Platform installation.
+   - Open the `inventory` file in a text editor of your choice.
+   - Configure the inventory file by specifying the hosts and connection details according to your environment.
+   - Remove the sample host entries and replace them with the appropriate information for your setup. See inventory files for hub and conttroller for example.
+
+7. Save the changes to the inventory file.
+
+8. Run the setup script:
+   - In the terminal, ensure you are still in the directory where the setup bundle was extracted.
+   - Run the setup script using the following command:
+     ./setup.sh
+
+9. Follow the installation prompts:
+   - The setup script will guide you through the installation process and prompt you for any necessary information.
+   - Read and follow the prompts carefully, providing the required information when prompted.
+   - The prompts may include accepting the license agreement, specifying installation paths, and configuring the platform.
+
+10. Wait for the installation to complete:
+    - The installation process may take some time, depending on your system's resources.
+    - Be patient and allow the installer to finish its tasks.
+
+11. Verify the installation:
+    - Once the installation completes successfully, you can verify the installation by running the following command:
+      ansible --version
+
+    - If Ansible is installed correctly, you should see the version information displayed.
+
+Congratulations! You have successfully installed the Ansible Automation Platform setup bundle on RHEL 9. You can now proceed to use Ansible for your automation tasks. Remember to consult the official Ansible documentation for further guidance on configuring and using the platform.
