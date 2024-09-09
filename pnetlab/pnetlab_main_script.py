@@ -1,3 +1,4 @@
+# pnetlab_main_script.py
 import requests
 import json
 from tabulate import tabulate
@@ -124,6 +125,29 @@ class PNetLabClient:
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
             return None
+
+    def wipe_all_nodes(self):
+        # Retrieve node details and wipe each one
+        node_list_response = self.list_nodes()
+        
+        if node_list_response.status_code == 200:
+            nodes_data = node_list_response.json()["data"]["nodes"]
+            node_ids = [node["id"] for node in nodes_data.values()]
+            
+            if node_ids:
+                print(f"Found {len(node_ids)} nodes. Starting to wipe all nodes...")
+                for node_id in node_ids:
+                    wipe_payload = json.dumps({"id": str(node_id)})
+                    wipe_response = requests.post(f"{self.base_url}/api/labs/session/nodes/wipe", headers={'Content-Type': 'application/json'}, data=wipe_payload, cookies=self.cookies, verify=False)
+                    
+                    if wipe_response.status_code == 200:
+                        print(f"Node {node_id} wiped successfully")
+                    else:
+                        print(f"Failed to wipe node {node_id}. Status code: {wipe_response.status_code}, Message: {wipe_response.text}")
+            else:
+                print("No nodes found to wipe.")
+        else:
+            print(f"Failed to retrieve nodes. Status code: {node_list_response.status_code}, Message: {node_list_response.text}")
 
     def sign_out(self):
         response = requests.get(f"{self.base_url}/api/auth/logout", cookies=self.cookies, verify=False)
