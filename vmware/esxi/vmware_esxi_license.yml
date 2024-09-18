@@ -1,0 +1,17 @@
+---
+- name: SSH to all ESXi hosts and refresh license
+  hosts: esxi
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+    - name: Remove license.cfg file
+      command: rm -rf /etc/vmware/license.cfg
+
+    - name: Copy license.cfg backup
+      command: cp /etc/vmware/.#license.cfg /etc/vmware/license.cfg
+
+    - name: Restart vpxa service
+      command: /etc/init.d/vpxa restart
+
