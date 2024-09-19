@@ -2,6 +2,8 @@
 - name: Scan subnet for active hosts
   hosts: localhost
   gather_facts: no
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Install nmap
       ansible.builtin.package:
