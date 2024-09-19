@@ -3,9 +3,18 @@
   hosts: localhost
   gather_facts: no
   tasks:
+    - name: Install nmap
+      ansible.builtin.package:
+        name: nmap
+        state: present
+
     - name: Scan the subnet for live hosts
       ansible.builtin.shell: "nmap -sn 192.168.1.0/24"
       register: nmap_output
+
+    - name: Show nmap raw output
+      ansible.builtin.debug:
+        var: nmap_output.stdout
 
     - name: Extract live hosts from nmap output
       ansible.builtin.debug:
