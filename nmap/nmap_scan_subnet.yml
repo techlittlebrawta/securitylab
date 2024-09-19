@@ -1,23 +1,12 @@
 ---
-- name: Nmap Scan Subnet
+- name: Scan subnet for active hosts
   hosts: localhost
   gather_facts: no
-  vars:
-    # Define the subnet to scan. You can modify this to the desired subnet.
-    subnet_to_scan: "192.168.1.0/24"
-
   tasks:
-    - name: Install Nmap (if not already installed)
-      become: yes
-      ansible.builtin.package:
-        name: nmap
-        state: present
+    - name: Scan the subnet for live hosts
+      ansible.builtin.shell: "nmap -sn 192.168.1.0/24"
+      register: nmap_output
 
-    - name: Perform Nmap scan on the subnet
-      ansible.builtin.command:
-        cmd: "nmap -sP {{ subnet_to_scan }}"
-      register: scan_result
-
-    - name: Display Nmap scan result
+    - name: Extract live hosts from nmap output
       ansible.builtin.debug:
-        var: scan_result.stdout
+        var: nmap_output.stdout_lines
