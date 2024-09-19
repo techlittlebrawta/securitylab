@@ -1,0 +1,19 @@
+---
+- name: Scan for active devices on subnet 192.168.1.0/24
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Install nmap
+      become: yes
+      ansible.builtin.package:
+        name: nmap
+        state: present
+
+    - name: Scan subnet for active devices
+      ansible.builtin.command:
+        cmd: nmap -sn 192.168.1.0/24
+      register: scan_result
+
+    - name: Display scan results
+      ansible.builtin.debug:
+        var: scan_result.stdout
