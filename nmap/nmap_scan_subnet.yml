@@ -1,11 +1,11 @@
 ---
 - name: Scan subnet for active hosts
-  hosts: localhost
+  hosts: LAB-AAP-CONT-01
   gather_facts: no
-  become: no  # Use 'yes' if you need elevated privileges
+  become: yes
   tasks:
     - name: Ensure nmap is installed
-      ansible.builtin.package:
+      ansible.builtin.yum:  # Use 'dnf' if it's preferred and properly configured
         name: nmap
         state: present
 
