@@ -2,7 +2,7 @@
 - name: Scan subnet for active hosts
   hosts: localhost
   gather_facts: no
-  become: yes
+  become: no  # Use 'yes' if you need elevated privileges
   tasks:
     - name: Ensure nmap is installed
       ansible.builtin.package:
