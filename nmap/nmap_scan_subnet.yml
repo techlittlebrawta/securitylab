@@ -1,8 +1,22 @@
 ---
-- name: Test dnf with Ansible
+- name: Scan subnet for active hosts
   hosts: localhost
   gather_facts: no
+  become: yes
   tasks:
-    - name: Install a dummy package
-      ansible.builtin.shell: "sudo dnf install -y which"
-      become: yes
+    - name: Ensure nmap is installed
+      ansible.builtin.package:
+        name: nmap
+        state: present
+
+    - name: Scan the subnet for live hosts
+      ansible.builtin.shell: "nmap -sn 192.168.1.0/24"
+      register: nmap_output
+
+    - name: Show nmap raw output
+      ansible.builtin.debug:
+        var: nmap_output.stdout
+
+    - name: Extract live hosts from nmap output
+      ansible.builtin.debug:
+        var: nmap_output.stdout_lines
