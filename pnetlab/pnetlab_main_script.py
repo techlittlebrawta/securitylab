@@ -1,4 +1,3 @@
-# pnetlab_main_script.py
 import requests
 import json
 from tabulate import tabulate
@@ -168,3 +167,66 @@ class PNetLabClient:
         headers = ["Name", "ID", "URL", "Status"]
         print("\n--------------------------- Node Details -------------------------------\n")
         print(tabulate(combined_data, headers))
+
+    def add_node(self, payload):
+        """ Add a node based on the provided payload """
+        add_node_url = f"{self.base_url}/api/labs/session/nodes/add"
+        headers = {'Content-Type': 'application/json'}
+        try:
+            print(f"Payload: {json.dumps(payload, indent=2)}")  # Log the payload
+            response = requests.post(add_node_url, headers=headers, cookies=self.cookies, data=json.dumps(payload), verify=False)
+            response.raise_for_status()
+
+            if response.status_code == 201:
+                print(f"Node '{payload['name']}' added successfully using template ID: {payload['template']}")
+            else:
+                print(f"Unexpected status code: {response.status_code}. Response: {response.text}")
+
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to add node: {e}")
+
+    def list_available_templates(self):
+        template_url = f"{self.base_url}/api/list/templates/"
+        try:
+            response = requests.get(template_url, cookies=self.cookies, verify=False)
+            response.raise_for_status()
+
+            templates = response.json()
+            if 'data' in templates:
+                if isinstance(templates['data'], dict):
+                    filtered_templates = {k: v for k, v in templates['data'].items() if ".missing" not in v}
+                elif isinstance(templates['data'], list):
+                    filtered_templates = [t for t in templates['data'] if ".missing" not in t.get('name', '')]
+                else:
+                    print("Unexpected template data structure.")
+                    return None
+                
+                print("Available Templates:")
+                for template in filtered_templates:
+                    if isinstance(template, dict):
+                        print(f"Template: {template.get('name', 'Unknown')}, ID: {template.get('id', 'Unknown')}")
+                    else:
+                        print(f"Template ID: {template}, Name: {filtered_templates[template]}")
+                
+                return filtered_templates
+            else:
+                print("No templates found or unexpected response structure.")
+                return None
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to list templates: {e}")
+            return None
+
+    def get_template_payload(self, template_id):
+        payload_url = f"{self.base_url}/api/list/templates/{template_id}"
+        try:
+            response = requests.get(payload_url, cookies=self.cookies, verify=False)
+            response.raise_for_status()
+            payload = response.json()
+            
+            # Extract only the key and value pairs
+            extracted_payload = {key: value['value'] for key, value in payload['data']['options'].items()}
+            
+            return extracted_payload
+        except requests.exceptions.RequestException as e:
+            print(f"Failed to fetch template payload: {e}")
+            return None
